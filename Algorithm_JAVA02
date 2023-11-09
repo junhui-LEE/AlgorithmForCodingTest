@@ -1,0 +1,47 @@
+import java.util.*;
+
+class Solution {
+    
+    static LinkedList<Integer>[] graph;
+    static boolean[] visited;
+    
+    public void makeVisitedAndGraph(int n, int[][] computers){
+        visited = new boolean[n];
+        graph = new LinkedList[n];
+        for(int i=0; i<n; i++){
+            graph[i] = new LinkedList<>();
+        }
+        for(int i=0; i<n; i++){
+            for(int j=i; j<n; j++){
+                if(i==j) continue;
+                if(computers[i][j] == 1){
+                    graph[i].add(j);
+                    graph[j].add(i);
+                }
+            }
+        }
+    } 
+    
+    public int solution(int n, int[][] computers) {
+        int answer = 0;
+        makeVisitedAndGraph(n, computers);
+        for(int i=0; i<visited.length; i++){
+            if(!visited[i]){
+                answer++;
+                dfs(i);
+            }
+        }
+        return answer;
+    }
+    
+    public void dfs(int i){
+        visited[i] = true;
+        for(int k=0; k<graph[i].size(); k++){
+            int y = graph[i].get(k);
+            if(!visited[y]){
+                dfs(y);
+            }
+        }
+    }
+    
+}
